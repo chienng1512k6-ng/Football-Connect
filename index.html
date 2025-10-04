@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Football Connect</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --green1: #1db954;
+      --green2: #21e065;
+      --green3: #0e3c1e;
+      --gray-bg: #f7f9fa;
+      --card-radius: 18px;
+      --shadow: 0 4px 24px rgba(0,0,0,0.07);
+    }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: var(--gray-bg);
+      color: #222;
+    }
+    /* Header */
+    .header {
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      padding: 0 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 68px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      font-weight: bold;
+      font-size: 1.3rem;
+      color: var(--green1);
+      letter-spacing: 1px;
+      margin-right: 32px;
+    }
+    .logo i {
+      font-size: 2rem;
+      margin-right: 10px;
+    }
+    .nav {
+      display: flex;
+      gap: 28px;
+    }
+    .nav a {
+      text-decoration: none;
+      color: #222;
+      font-weight: 500;
+      font-size: 1rem;
+      transition: color 0.2s;
+    }
+    .nav a:hover {
+      color: var(--green1);
+    }
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .btn-login {
+      background: var(--green1);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 22px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-login:hover {
+      background: var(--green2);
+    }
+    /* Hero Section */
+    .hero {
+      background: linear-gradient(180deg, var(--green1) 0%, #38ef7d 100%);
+      padding: 56px 0 40px 0;
+      text-align: center;
+      color: #fff;
+      position: relative;
+    }
+    .hero h1 {
+      font-size: 2.7rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      letter-spacing: 1px;
+    }
+    .hero p {
+      font-size: 1.3rem;
+      margin-bottom: 32px;
+      font-weight: 400;
+    }
+    .hero .btn-cta {
+      background: #fff;
+      color: var(--green1);
+      border: none;
+      border-radius: 8px;
+      padding: 13px 36px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      margin-bottom: 36px;
+      transition: background 0.2s, color 0.2s;
+    }
+    .hero .btn-cta:hover {
+      background: var(--green3);
+      color: #fff;
+    }
+    /* Hero Cards */
+    .hero-cards {
+      margin: 0 auto;
+      margin-top: 38px;
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      max-width: 800px;
+    }
+    .hero-card {
+      background: rgba(255,255,255,0.13);
+      border-radius: var(--card-radius);
+      padding: 26px 24px;
+      min-width: 180px;
+      flex: 1;
+      color: #fff;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .hero-card:hover {
+      background: rgba(255,255,255,0.22);
+      transform: translateY(-6px) scale(1.03);
+    }
+    .hero-card i {
+      font-size: 2.2rem;
+      margin-bottom: 14px;
+      color: #fff;
+      background: var(--green1);
+      border-radius: 50%;
+      padding: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .hero-card span {
+      font-size: 1.08rem;
+      font-weight: 500;
+      margin-top: 8px;
+    }
+    /* Section */
+    .section {
+      background: #fff;
+      padding: 54px 0 32px 0;
+      text-align: center;
+    }
+    .section-title {
+      font-size: 1.7rem;
+      font-weight: 700;
+      margin-bottom: 18px;
+      color: #222;
+    }
+    .section-desc {
+      font-size: 1.1rem;
+      color: #444;
+      margin-bottom: 38px;
+      font-weight: 400;
+    }
+    /* Feature Cards */
+    .features {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 28px;
+      max-width: 1100px;
+      margin: 0 auto 0 auto;
+    }
+    .feature-card {
+      background: #f7f9fa;
+      border-radius: var(--card-radius);
+      box-shadow: var(--shadow);
+      padding: 28px 22px;
+      min-width: 210px;
+      max-width: 260px;
+      flex: 1 1 220px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .feature-card:hover {
+      box-shadow: 0 8px 32px rgba(31,38,135,0.13);
+      transform: translateY(-4px) scale(1.03);
+    }
+    .feature-card i {
+      font-size: 2rem;
+      color: var(--green1);
+      margin-bottom: 10px;
+    }
+    .feature-card .feature-title {
+      font-weight: 600;
+      font-size: 1.08rem;
+      margin-bottom: 8px;
+      color: #222;
+    }
+    .feature-card .feature-desc {
+      font-size: 0.98rem;
+      color: #444;
+    }
+    /* Call to Action Section */
+    .cta-section {
+      background: linear-gradient(90deg, var(--green1) 0%, #38ef7d 100%);
+      color: #fff;
+      text-align: center;
+      padding: 48px 0 38px 0;
+      margin-top: 38px;
+    }
+    .cta-section h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+    .cta-btns {
+      margin-bottom: 18px;
+    }
+    .cta-btns button {
+      background: #fff;
+      color: var(--green1);
+      border: none;
+      border-radius: 8px;
+      padding: 12px 28px;
+      font-size: 1.08rem;
+      font-weight: 600;
+      margin: 0 8px;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .cta-btns button:hover {
+      background: var(--green3);
+      color: #fff;
+    }
+    .cta-notes {
+      font-size: 0.98rem;
+      color: #eaffea;
+      margin-top: 8px;
+    }
+    /* Footer */
+    .footer {
+      background: #111c24;
+      color: #fff;
+      padding: 38px 0 0 0;
+      text-align: center;
+      margin-top: 0;
+    }
+    .footer-logo {
+      font-size: 2.5rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+    }
+    .footer-logo i {
+      font-size: 2.5rem;
+      color: var(--green1);
+    }
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 38px;
+      margin: 18px 0 0 0;
+      flex-wrap: wrap;
+    }
+    .footer-links div {
+      min-width: 120px;
+    }
+    .footer-links h4 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+    .footer-links a {
+      display: block;
+      color: #e0e0e0;
+      text-decoration: none;
+      font-size: 0.98rem;
+      margin-bottom: 4px;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover {
+      color: var(--green1);
+    }
+    .footer-bottom {
+      margin-top: 28px;
+      font-size: 0.95rem;
+      color: #aaa;
+      padding-bottom: 18px;
+    }
+    /* Popup Overlay */
+    .popup-overlay {
+      display: none;
+      position: fixed;
+      z-index: 1001;
+      left: 0; top: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.35);
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.2s;
+    }
+    .popup-overlay.active {
+      display: flex;
+      animation: fadeIn 0.2s;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0;}
+      to { opacity: 1;}
+    }
+    .popup-box {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(31,38,135,0.13);
+      padding: 36px 28px 24px 28px;
+      min-width: 320px;
+      max-width: 95vw;
+      position: relative;
+      animation: popupIn 0.25s;
+    }
+    @keyframes popupIn {
+      from { transform: scale(0.95); opacity: 0;}
+      to { transform: scale(1); opacity: 1;}
+    }
+    .popup-close {
+      position: absolute;
+      top: 14px;
+      right: 18px;
+      font-size: 1.3rem;
+      color: #888;
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .popup-close:hover {
+      color: var(--green1);
+    }
+    .popup-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--green1);
+      margin-bottom: 18px;
+      text-align: center;
+    }
+    .popup-form {
+      display: flex;
+      flex-direction: column;
+      gap: 13px;
+    }
+    .popup-form input {
+      padding: 10px 12px;
+      border-radius: 7px;
+      border: 1px solid #e0e0e0;
+      font-size: 1rem;
+      outline: none;
+      transition: border 0.2s;
+    }
+    .popup-form input:focus {
+      border: 1.5px solid var(--green1);
+    }
+    .popup-form button[type="submit"] {
+      background: var(--green1);
+      color: #fff;
+      border: none;
+      border-radius: 7px;
+      padding: 10px 0;
+      font-size: 1.08rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 6px;
+      transition: background 0.2s;
+    }
+    .popup-form button[type="submit"]:hover {
+      background: var(--green2);
+    }
+    .popup-switch {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 0.98rem;
+    }
+    .popup-switch a {
+      color: var(--green1);
+      text-decoration: none;
+      font-weight: 500;
+      cursor: pointer;
+      margin-left: 4px;
+    }
+    .popup-switch a:hover {
+      text-decoration: underline;
+    }
+    .popup-message {
+      color: #e74c3c;
+      font-size: 0.98rem;
+      margin-bottom: 6px;
+      text-align: center;
+      min-height: 18px;
+    }
+    @media (max-width: 700px) {
+      .popup-box { min-width: 90vw; padding: 24px 8vw 18px 8vw;}
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <div class="header">
+    <div class="header-left">
+      <span class="logo"><i class="fa-solid fa-futbol"></i> Football Connect</span>
+      <nav class="nav">
+        <a href="#">Kết nối</a>
+        <a href="#">Đam mê</a>
+        <a href="#">Tỏa sáng</a>
+      </nav>
+    </div>
+    <div class="header-right">
+      <button class="btn-login" id="btnOpenLogin">Đăng nhập</button>
+    </div>
+  </div>
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1>Football Connect</h1>
+    <p>Kết nối – Giao lưu – Tỏa sáng<br>cùng đam mê bóng đá</p>
+    <button class="btn-cta"><i class="fa-solid fa-bolt"></i> Get Started Today</button>
+    <div class="hero-cards">
+      <div class="hero-card">
+        <i class="fa-solid fa-people-group"></i>
+        <span>Tìm đội, bắt cặp đấu</span>
+      </div>
+      <div class="hero-card">
+        <i class="fa-solid fa-magnifying-glass-location"></i>
+        <span>Tìm kiếm sân bóng</span>
+      </div>
+      <div class="hero-card">
+        <i class="fa-solid fa-user-plus"></i>
+        <span>Tuyển thành viên</span>
+      </div>
+    </div>
+  </section>
+  <!-- Section: Hoạt động -->
+  <section class="section">
+    <div class="section-title">Các thức hoạt động của Football Connect</div>
+    <div class="section-desc">
+      Nền tảng của chúng tôi tạo cơ hội kết nối cộng đồng bóng đá, giúp cầu thủ tìm đội, đội tìm đối thủ, và các đội tổ chức – quản lý trận đấu, sân bãi.
+    </div>
+    <div class="features">
+      <div class="feature-card">
+        <i class="fa-solid fa-user-group"></i>
+        <div class="feature-title">Kết nối với các đồng đội</div>
+        <div class="feature-desc">Hãy cùng giao lưu, làm quen và sát cánh với những người chơi có cùng đam mê, cùng nhau xây dựng một tập thể gắn bó.</div>
+      </div>
+      <a href="index1.html" style="text-decoration:none; color:inherit;">
+        <div class="feature-card">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <div class="feature-title">Tìm kiếm đội bóng</div>
+            <div class="feature-desc">Dễ dàng tìm kiếm và tham gia các đội bóng cho mình, hoặc mời những người chơi khác gia nhập đội/trận đấu phù hợp.</div>
+        </div>
+      </a>
+      <div class="feature-card">
+        <i class="fa-solid fa-heart"></i>
+        <div class="feature-title">Đam mê, yêu thích bóng đá</div>
+        <div class="feature-desc">Không chỉ tham gia thi đấu, bạn còn có cơ hội kết nối, chia sẻ kinh nghiệm, lan tỏa tinh thần cộng đồng cùng những người bạn bóng đá.</div>
+      </div>
+    </div>
+  </section>
+  <!-- Section: Tính năng mạnh mẽ -->
+  <section class="section" style="background:#fff;">
+    <div class="section-title">Các tính năng mạnh mẽ</div>
+    <div class="section-desc">
+      Mọi thành phần đều phát triển từ người dùng bóng đá cá nhân
+    </div>
+    <div class="features">
+      <div class="feature-card">
+        <i class="fa-solid fa-video"></i>
+        <div class="feature-title">Hồ sơ video</div>
+        <div class="feature-desc">Chia sẻ những khoảnh khắc nổi bật, ấn tượng và kỹ năng của bạn với cộng đồng.</div>
+      </div>
+      <div class="feature-card">
+        <i class="fa-solid fa-chart-line"></i>
+        <div class="feature-title">Phân tích hiệu suất</div>
+        <div class="feature-desc">Theo dõi phong độ, số liệu và hiệu suất thi đấu của bạn qua từng trận.</div>
+      </div>
+      <div class="feature-card">
+        <i class="fa-solid fa-network-wired"></i>
+        <div class="feature-title">Mạng lưới rộng</div>
+        <div class="feature-desc">Kết nối với các đội, sân và cầu thủ trên toàn quốc, mở rộng mối quan hệ bóng đá.</div>
+      </div>
+      <div class="feature-card">
+        <i class="fa-solid fa-mobile-screen"></i>
+        <div class="feature-title">Di động</div>
+        <div class="feature-desc">Quản lý đội bóng và sự nghiệp của bạn mọi lúc, mọi nơi trên thiết bị di động.</div>
+      </div>
+      <div class="feature-card">
+        <i class="fa-solid fa-id-card"></i>
+        <div class="feature-title">Hồ sơ cá nhân</div>
+        <div class="feature-desc">Xây dựng hồ sơ chuyên nghiệp, thể hiện kỹ năng và thành tích cá nhân.</div>
+      </div>
+      <div class="feature-card">
+        <i class="fa-solid fa-comments"></i>
+        <div class="feature-title">Nhắn tin trực tiếp</div>
+        <div class="feature-desc">Liên hệ, trao đổi, kết nối với các đội, cầu thủ và bạn bè dễ dàng.</div>
+      </div>
+      <div class="feature-card">
+        <i class="fa-solid fa-users-gear"></i>
+        <div class="feature-title">Quản lý đội bóng</div>
+        <div class="feature-desc">Tổ chức, quản lý đội bóng, lịch thi đấu, thành viên và hoạt động.</div>
+      </div>
+      <div class="feature-card">
+        <i class="fa-solid fa-database"></i>
+        <div class="feature-title">Trung lập hợp tác</div>
+        <div class="feature-desc">Kết nối và tạo các buổi hợp tác, giao lưu giữa các đội bóng.</div>
+      </div>
+    </div>
+  </section>
+  <!-- Call to Action -->
+  <section class="cta-section">
+    <h2>Bạn có thật sự yêu thích bóng đá?</h2>
+    <div class="cta-btns">
+      <button><i class="fa-solid fa-user-plus"></i> Tạo hồ sơ cầu thủ</button>
+      <button><i class="fa-solid fa-envelope"></i> Liên hệ hỗ trợ</button>
+    </div>
+    <div class="cta-notes">
+      <span>✔️ Miễn phí tham gia &nbsp; &nbsp; ✔️ Không phát sinh chi phí &nbsp; &nbsp; ✔️ Chỉ xây dựng bởi ký ức nhỏ</span>
+    </div>
+  </section>
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-logo">
+      <i class="fa-solid fa-futbol"></i>
+      Football<br>Connect
+    </div>
+    <div class="footer-links">
+      <div>
+        <h4>Đồng đội & Cộng đồng</h4>
+        <a href="#">Kết nối đội bóng</a>
+        <a href="#">Tìm kiếm sân</a>
+        <a href="#">Tuyển thành viên</a>
+      </div>
+      <div>
+        <h4>Định danh & Sự kiện</h4>
+        <a href="#">Hồ sơ cá nhân</a>
+        <a href="#">Sự kiện bóng đá</a>
+        <a href="#">Thành tích</a>
+      </div>
+      <div>
+        <h4>Công ty</h4>
+        <a href="#">Giới thiệu</a>
+        <a href="#">Liên hệ</a>
+        <a href="#">Chính sách</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2025 Football Connect. Tất cả quyền được bảo lưu.
+    </div>
+  </footer>
+  <!-- Popup Đăng nhập/Đăng ký -->
+  <div class="popup-overlay" id="popupOverlay">
+    <div class="popup-box" id="popupBox">
+      <button class="popup-close" id="popupClose"><i class="fa-solid fa-xmark"></i></button>
+      <!-- Đăng nhập -->
+      <div id="loginForm">
+        <div class="popup-title">Đăng nhập tài khoản</div>
+        <div class="popup-message" id="loginMsg"></div>
+        <form class="popup-form" autocomplete="off" onsubmit="return false;">
+          <input type="email" id="loginEmail" placeholder="Email" required>
+          <input type="password" id="loginPassword" placeholder="Mật khẩu" required>
+          <button type="submit" id="btnLoginSubmit">Đăng nhập</button>
+        </form>
+        <div class="popup-switch">
+          Chưa có tài khoản?
+          <a href="#" id="switchToRegister">Đăng ký ngay</a>
+        </div>
+      </div>
+      <!-- Đăng ký -->
+      <div id="registerForm" style="display:none;">
+        <div class="popup-title">Đăng ký tài khoản</div>
+        <div class="popup-message" id="registerMsg"></div>
+        <form class="popup-form" autocomplete="off" onsubmit="return false;">
+          <input type="text" id="registerName" placeholder="Họ và tên" required>
+          <input type="email" id="registerEmail" placeholder="Email" required>
+          <input type="password" id="registerPassword" placeholder="Mật khẩu" required>
+          <button type="submit" id="btnRegisterSubmit">Đăng ký</button>
+        </form>
+        <div class="popup-switch">
+          Đã có tài khoản?
+          <a href="#" id="switchToLogin">Đăng nhập</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Popup logic
+    const popupOverlay = document.getElementById('popupOverlay');
+    const popupBox = document.getElementById('popupBox');
+    const btnOpenLogin = document.getElementById('btnOpenLogin');
+    const popupClose = document.getElementById('popupClose');
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+    const switchToRegister = document.getElementById('switchToRegister');
+    const switchToLogin = document.getElementById('switchToLogin');
+    const loginMsg = document.getElementById('loginMsg');
+    const registerMsg = document.getElementById('registerMsg');
+
+    // Mở popup đăng nhập
+    btnOpenLogin.onclick = function() {
+      popupOverlay.classList.add('active');
+      loginForm.style.display = '';
+      registerForm.style.display = 'none';
+      loginMsg.textContent = '';
+      registerMsg.textContent = '';
+    };
+    // Đóng popup
+    popupClose.onclick = function() {
+      popupOverlay.classList.remove('active');
+    };
+    // Đóng khi click ra ngoài
+    popupOverlay.onclick = function(e) {
+      if (e.target === popupOverlay) popupOverlay.classList.remove('active');
+    };
+    // Chuyển sang đăng ký
+    switchToRegister.onclick = function(e) {
+      e.preventDefault();
+      loginForm.style.display = 'none';
+      registerForm.style.display = '';
+      loginMsg.textContent = '';
+      registerMsg.textContent = '';
+    };
+    // Chuyển sang đăng nhập
+    switchToLogin.onclick = function(e) {
+      e.preventDefault();
+      loginForm.style.display = '';
+      registerForm.style.display = 'none';
+      loginMsg.textContent = '';
+      registerMsg.textContent = '';
+    };
+
+    // Xử lý đăng nhập demo
+    document.getElementById('btnLoginSubmit').onclick = function() {
+      const email = document.getElementById('loginEmail').value.trim();
+      const pass = document.getElementById('loginPassword').value.trim();
+      if (!email || !pass) {
+        loginMsg.textContent = "Vui lòng nhập đầy đủ thông tin.";
+        return;
+      }
+      // Demo: chỉ kiểm tra email chứa @ và pass >= 4 ký tự
+      if (!email.includes('@') || pass.length < 4) {
+        loginMsg.textContent = "Email hoặc mật khẩu không hợp lệ.";
+        return;
+      }
+      loginMsg.style.color = "#1db954";
+      loginMsg.textContent = "Đăng nhập thành công!";
+      setTimeout(() => {
+        popupOverlay.classList.remove('active');
+        loginMsg.style.color = "#e74c3c";
+      }, 1000);
+    };
+
+    // Xử lý đăng ký demo
+    document.getElementById('btnRegisterSubmit').onclick = function() {
+      const name = document.getElementById('registerName').value.trim();
+      const email = document.getElementById('registerEmail').value.trim();
+      const pass = document.getElementById('registerPassword').value.trim();
+      if (!name || !email || !pass) {
+        registerMsg.textContent = "Vui lòng nhập đầy đủ thông tin.";
+        return;
+      }
+      if (!email.includes('@') || pass.length < 4) {
+        registerMsg.textContent = "Email hoặc mật khẩu không hợp lệ.";
+        return;
+      }
+      registerMsg.style.color = "#1db954";
+      registerMsg.textContent = "Đăng ký thành công! Vui lòng đăng nhập.";
+      setTimeout(() => {
+        // Chuyển sang đăng nhập
+        loginForm.style.display = '';
+        registerForm.style.display = 'none';
+        loginMsg.textContent = '';
+        registerMsg.style.color = "#e74c3c";
+      }, 1200);
+    };
+  </script>
+</body>
+</html>
