@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Tìm đối bắt cặp trận đấu - Football Connect</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --green1: #1db954;
+      --green2: #21e065;
+      --gray-bg: #f7f9fa;
+      --card-radius: 16px;
+      --shadow: 0 4px 24px rgba(0,0,0,0.07);
+    }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: var(--gray-bg);
+      color: #222;
+    }
+    .header {
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      padding: 0 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 68px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      font-weight: bold;
+      font-size: 1.3rem;
+      color: var(--green1);
+      letter-spacing: 1px;
+    }
+    .logo i {
+      font-size: 2rem;
+      margin-right: 10px;
+    }
+    .main-content {
+      display: flex;
+      gap: 32px;
+      max-width: 1200px;
+      margin: 32px auto 0 auto;
+      padding: 0 16px;
+      min-height: 70vh;
+    }
+    .filter-box {
+      background: #fff;
+      border-radius: var(--card-radius);
+      box-shadow: var(--shadow);
+      padding: 24px 18px 18px 18px;
+      min-width: 260px;
+      max-width: 300px;
+      height: fit-content;
+    }
+    .filter-box h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 18px;
+      color: #222;
+    }
+    .btn-post {
+      background: var(--green1);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 22px;
+      font-size: 1.05rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 18px;
+      width: 100%;
+      transition: background 0.2s;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .btn-post:hover {
+      background: var(--green2);
+    }
+    .filter-group {
+      margin-bottom: 16px;
+    }
+    .filter-group label {
+      font-size: 0.98rem;
+      font-weight: 500;
+      margin-bottom: 4px;
+      display: block;
+      color: #444;
+    }
+    .filter-group select, .filter-group input[type="date"] {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 7px;
+      border: 1px solid #e0e0e0;
+      font-size: 1rem;
+      background: #f7f9fa;
+      margin-top: 2px;
+      outline: none;
+      transition: border 0.2s;
+    }
+    .filter-group select:focus, .filter-group input[type="date"]:focus {
+      border: 1.5px solid var(--green1);
+    }
+    .filter-group input[type="date"] {
+      background: #eaffea;
+      border: 1.5px solid var(--green1);
+      color: #222;
+      font-weight: 500;
+      transition: box-shadow 0.2s;
+    }
+    .filter-group input[type="date"]:focus {
+      box-shadow: 0 0 0 2px #b6f5c7;
+    }
+    .filter-actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 8px;
+    }
+    .btn-reset {
+      background: #f3f3f3;
+      color: #888;
+      border: none;
+      border-radius: 7px;
+      padding: 8px 18px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn-reset:hover {
+      background: #e0e0e0;
+      color: #222;
+    }
+    .results-section {
+      flex: 1;
+      min-width: 0;
+    }
+    .results-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .results-header h2 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin: 0;
+    }
+    .sort-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .sort-group select {
+      padding: 7px 12px;
+      border-radius: 7px;
+      border: 1px solid #e0e0e0;
+      font-size: 1rem;
+      background: #f7f9fa;
+      outline: none;
+      transition: border 0.2s;
+    }
+    .sort-group select:focus {
+      border: 1.5px solid var(--green1);
+    }
+    .match-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 22px;
+      margin-bottom: 32px;
+    }
+    .match-card {
+      background: #fff;
+      border-radius: var(--card-radius);
+      box-shadow: var(--shadow);
+      padding: 18px 18px 14px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      position: relative;
+      min-height: 140px;
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .match-card:hover {
+      box-shadow: 0 8px 32px rgba(31,38,135,0.13);
+      transform: translateY(-4px) scale(1.03);
+    }
+    .match-card .match-title {
+      font-size: 1.08rem;
+      font-weight: 700;
+      margin-bottom: 2px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .match-card .match-title i {
+      color: var(--green1);
+      font-size: 1.3rem;
+    }
+    .match-card .match-info {
+      font-size: 0.98rem;
+      color: #444;
+      margin-bottom: 2px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+    .match-card .match-desc {
+      font-size: 0.97rem;
+      color: #666;
+      margin-bottom: 4px;
+    }
+    .match-card .match-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      margin-top: 6px;
+    }
+    .match-card .btn-join {
+      background: var(--green1);
+      color: #fff;
+      border: none;
+      border-radius: 7px;
+      padding: 7px 18px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .match-card .btn-join:hover {
+      background: #21e065;
+    }
+    .no-result {
+      color:#888;
+      font-size:1.1rem;
+      padding:32px 0;
+    }
+    /* Popup đăng tin */
+    .popup-overlay {
+      display: none;
+      position: fixed;
+      z-index: 1001;
+      left: 0; top: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.35);
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.2s;
+    }
+    .popup-overlay.active {
+      display: flex;
+      animation: fadeIn 0.2s;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0;}
+      to { opacity: 1;}
+    }
+    .popup-box {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(31,38,135,0.13);
+      padding: 32px 24px 18px 24px;
+      min-width: 320px;
+      max-width: 95vw;
+      position: relative;
+      animation: popupIn 0.25s;
+    }
+    @keyframes popupIn {
+      from { transform: scale(0.95); opacity: 0;}
+      to { transform: scale(1); opacity: 1;}
+    }
+    .popup-close {
+      position: absolute;
+      top: 14px;
+      right: 18px;
+      font-size: 1.3rem;
+      color: #888;
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .popup-close:hover {
+      color: var(--green1);
+    }
+    .popup-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--green1);
+      margin-bottom: 16px;
+      text-align: center;
+    }
+    .popup-form {
+      display: flex;
+      flex-direction: column;
+      gap: 13px;
+    }
+    .popup-form input, .popup-form select, .popup-form textarea {
+      padding: 8px 10px;
+      border-radius: 7px;
+      border: 1px solid #e0e0e0;
+      font-size: 1rem;
+      background: #f7f9fa;
+      outline: none;
+      transition: border 0.2s;
+    }
+    .popup-form input:focus, .popup-form select:focus, .popup-form textarea:focus {
+      border: 1.5px solid var(--green1);
+    }
+    .popup-form textarea {
+      min-height: 60px;
+      resize: vertical;
+    }
+    .popup-form button[type="submit"] {
+      background: var(--green1);
+      color: #fff;
+      border: none;
+      border-radius: 7px;
+      padding: 10px 0;
+      font-size: 1.08rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 6px;
+      transition: background 0.2s;
+    }
+    .popup-form button[type="submit"]:hover {
+      background: var(--green2);
+    }
+    .popup-message {
+      color: #e74c3c;
+      font-size: 0.98rem;
+      margin-bottom: 6px;
+      text-align: center;
+      min-height: 18px;
+    }
+    @media (max-width: 1100px) {
+      .main-content { flex-direction: column; gap: 18px;}
+      .filter-box { max-width: 100%; min-width: unset;}
+    }
+    @media (max-width: 700px) {
+      .main-content { padding: 0 2vw;}
+      .match-list { grid-template-columns: 1fr;}
+      .popup-box { min-width: 90vw; padding: 24px 8vw 18px 8vw;}
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <div class="header">
+    <span class="logo"><i class="fa-solid fa-futbol"></i> Football Connect</span>
+  </div>
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Filter Box -->
+    <div class="filter-box">
+      <button class="btn-post" id="btnPostMatch"><i class="fa-solid fa-plus"></i> Đăng tin tìm đối thủ</button>
+      <h3>Tìm đối bắt cặp trận đấu</h3>
+      <div class="filter-group">
+        <label for="filter-location">Địa điểm</label>
+        <select id="filter-location">
+          <option value="">Không</option>
+          <option value="Hà Nội">Hà Nội</option>
+          <option value="Hà Giang">Hà Giang</option>
+          <option value="Cao Bằng">Cao Bằng</option>
+          <option value="Lào Cai">Lào Cai</option>
+          <option value="Bắc Kạn">Bắc Kạn</option>
+          <option value="Tuyên Quang">Tuyên Quang</option>
+          <option value="Lạng Sơn">Lạng Sơn</option>
+          <option value="Thái Nguyên">Thái Nguyên</option>
+          <option value="Yên Bái">Yên Bái</option>
+          <option value="Phú Thọ">Phú Thọ</option>
+          <option value="Bắc Giang">Bắc Giang</option>
+          <option value="Bắc Ninh">Bắc Ninh</option>
+          <option value="Quảng Ninh">Quảng Ninh</option>
+          <option value="Hải Dương">Hải Dương</option>
+          <option value="Hải Phòng">Hải Phòng</option>
+          <option value="Hưng Yên">Hưng Yên</option>
+          <option value="Thái Bình">Thái Bình</option>
+          <option value="Hà Nam">Hà Nam</option>
+          <option value="Nam Định">Nam Định</option>
+          <option value="Ninh Bình">Ninh Bình</option>
+          <option value="Thanh Hóa">Thanh Hóa</option>
+          <option value="Nghệ An">Nghệ An</option>
+          <option value="Hà Tĩnh">Hà Tĩnh</option>
+          <option value="Quảng Bình">Quảng Bình</option>
+          <option value="Quảng Trị">Quảng Trị</option>
+          <option value="Thừa Thiên Huế">Thừa Thiên Huế</option>
+          <option value="Đà Nẵng">Đà Nẵng</option>
+          <option value="Quảng Nam">Quảng Nam</option>
+          <option value="Quảng Ngãi">Quảng Ngãi</option>
+          <option value="Bình Định">Bình Định</option>
+          <option value="Phú Yên">Phú Yên</option>
+          <option value="Khánh Hòa">Khánh Hòa</option>
+          <option value="Ninh Thuận">Ninh Thuận</option>
+          <option value="Bình Thuận">Bình Thuận</option>
+          <option value="Kon Tum">Kon Tum</option>
+          <option value="Gia Lai">Gia Lai</option>
+          <option value="Đắk Lắk">Đắk Lắk</option>
+          <option value="Đắk Nông">Đắk Nông</option>
+          <option value="Lâm Đồng">Lâm Đồng</option>
+          <option value="Bình Phước">Bình Phước</option>
+          <option value="Tây Ninh">Tây Ninh</option>
+          <option value="Bình Dương">Bình Dương</option>
+          <option value="Đồng Nai">Đồng Nai</option>
+          <option value="Bà Rịa - Vũng Tàu">Bà Rịa - Vũng Tàu</option>
+          <option value="Hồ Chí Minh">Hồ Chí Minh</option>
+          <option value="Long An">Long An</option>
+          <option value="Tiền Giang">Tiền Giang</option>
+          <option value="Bến Tre">Bến Tre</option>
+          <option value="Trà Vinh">Trà Vinh</option>
+          <option value="Vĩnh Long">Vĩnh Long</option>
+          <option value="Đồng Tháp">Đồng Tháp</option>
+          <option value="An Giang">An Giang</option>
+          <option value="Kiên Giang">Kiên Giang</option>
+          <option value="Cần Thơ">Cần Thơ</option>
+          <option value="Hậu Giang">Hậu Giang</option>
+          <option value="Sóc Trăng">Sóc Trăng</option>
+          <option value="Bạc Liêu">Bạc Liêu</option>
+          <option value="Cà Mau">Cà Mau</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label for="filter-date">Ngày thi đấu</label>
+        <input type="date" id="filter-date">
+      </div>
+      <div class="filter-group">
+        <label for="filter-level">Trình độ</label>
+        <select id="filter-level">
+          <option value="">Không</option>
+          <option value="Chuyên nghiệp">Chuyên nghiệp</option>
+          <option value="Bán chuyên">Bán chuyên</option>
+          <option value="Phong trào">Phong trào</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label for="filter-time">Khung giờ</label>
+        <select id="filter-time">
+          <option value="">Không</option>
+          <option value="Sáng">Sáng</option>
+          <option value="Chiều">Chiều</option>
+          <option value="Tối">Tối</option>
+          <option value="Cả ngày">Cả ngày</option>
+        </select>
+      </div>
+      <div class="filter-actions">
+        <button class="btn-reset" id="btnResetFilter"><i class="fa-solid fa-xmark"></i> Xóa bộ lọc</button>
+      </div>
+    </div>
+    <!-- Results Section -->
+    <div class="results-section">
+      <div class="results-header">
+        <h2>Kết quả (<span id="result-count">0</span>)</h2>
+        <div class="sort-group">
+          <label for="sort-time" style="font-size:0.98rem;color:#444;">Sắp xếp:</label>
+          <select id="sort-time">
+            <option value="newest">Mới nhất</option>
+            <option value="soonest">Gần nhất</option>
+          </select>
+        </div>
+      </div>
+      <div class="match-list" id="match-list"></div>
+    </div>
+  </div>
+  <!-- Popup đăng tin -->
+  <div class="popup-overlay" id="popupOverlay">
+    <div class="popup-box">
+      <button class="popup-close" id="popupClose"><i class="fa-solid fa-xmark"></i></button>
+      <div class="popup-title">Đăng tin
